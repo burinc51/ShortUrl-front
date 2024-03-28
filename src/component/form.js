@@ -10,7 +10,7 @@ export default function Form() {
     const [showhistory, setShowhistor] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [showQr, setShowQr] = useState("");
-    const local = "https://shorturl-server.onrender.com"
+    const local = "https://shorturl-server.onrender.com/"
 
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
@@ -21,7 +21,7 @@ export default function Form() {
         if (inputValue !== '') {
             setShowContent(true);
 
-            fetch('api/form', {
+            fetch(`${local}api/form`, {
                 method: 'POST',
                 body: JSON.stringify({ inputValue }),
                 headers: { 'Content-Type': 'application/json' }
@@ -41,7 +41,7 @@ export default function Form() {
 
     const fetchHistoryData = async () => {
         try {
-            const response = await fetch('/api/url');
+            const response = await fetch(`${local}api/url`);
             const data = await response.json();
             setHistoryData(data);
         } catch (error) {
@@ -55,7 +55,7 @@ export default function Form() {
     }
 
     const handleDelete = async (prop) => {
-        fetch('/api/delete', {
+        fetch(`${local}api/delete`, {
             method: 'DELETE',
             body: JSON.stringify({ prop }),
             headers: { 'Content-Type': 'application/json' }
@@ -89,7 +89,7 @@ export default function Form() {
                     <div className="card mb-3">
                         <div className="card-body">
                             <p className="card-text">Full URL: {inputValue}</p>
-                            <p className="card-text">Short URL: <a href={local + shorturl} target="_blank" rel="noopener noreferrer">{`http://localhost:8000/${shorturl}`}</a></p>
+                            <p className="card-text">Short URL: <a href={local + shorturl} target="_blank" rel="noopener noreferrer">{local+shorturl}</a></p>
                             <div id='qrcode' className="text-center">
                                 <QRCode
                                     size={256}
@@ -110,7 +110,7 @@ export default function Form() {
                                 <span className="fw-bold">Full URL:</span> {item.furl}
                             </div>
                             <div>
-                                <span className="fw-bold">Short URL:</span> <a href={local + item.surl} target="_blank" rel="noopener noreferrer">{`http://localhost:8000/${item.surl}`}</a>
+                                <span className="fw-bold">Short URL:</span> <a href={local + item.surl} target="_blank" rel="noopener noreferrer">{local+item.surl}</a>
                             </div>
                             <div>
                                 <span className="fw-bold">Count:</span> {item.c}
