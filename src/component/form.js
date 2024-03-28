@@ -10,7 +10,7 @@ export default function Form() {
     const [showhistory, setShowhistor] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [showQr, setShowQr] = useState("");
-    const local = "http://localhost:8000/"
+    const local = "https://shorturl-server.onrender.com"
 
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
