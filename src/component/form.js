@@ -11,6 +11,7 @@ export default function Form() {
     const [showhistory, setShowhistor] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [showQr, setShowQr] = useState("");
+    const [copySuccess, setCopySuccess] = useState("");
     const local = "https://shorturl-server.onrender.com/"
 
     const handleInputChange = (event) => {
@@ -65,6 +66,12 @@ export default function Form() {
 
     }
 
+    const copyUrl = (prop) => {
+        navigator.clipboard.writeText(local + prop)
+        setCopySuccess(prop);
+        console.log(copySuccess);
+    }
+
     useEffect(() => {
         fetchHistoryData()
     })
@@ -88,17 +95,25 @@ export default function Form() {
 
                 {showContent && (
                     <div className="card mb-3">
-                        <div className="card-body">
-                            <p className="card-text">Full URL: {full}</p>
-                            <p className="card-text">Short URL: <a href={local + shorturl} target="_blank" rel="noopener noreferrer">{local + shorturl}</a></p>
-                            <div id='qrcode' className="text-center">
-                                <QRCode
-                                    size={256}
-                                    value={local + shorturl}
-                                />
-                            </div>
+                    <div className="card-body">
+                        <p className="card-text">Full URL: {full}</p>
+                        <div className="d-flex justify-content-center align-items-center">
+                            <p className="card-text mb-0 mx-1">Short URL: 
+                                <a href={local + shorturl} target="_blank" rel="noopener noreferrer">{local + shorturl}</a>
+                            </p>
+                            <button className="btn btn-info" onClick={() => copyUrl(local + shorturl)}>
+                                {copySuccess === local + shorturl ? 'Copied!' : 'Copy URL'}
+                            </button>
+                        </div>
+                        <div id='qrcode' className="text-center">
+                            <QRCode
+                                size={256}
+                                value={local + shorturl}
+                            />
                         </div>
                     </div>
+                </div>
+                
                 )}
 
             </div>
@@ -116,19 +131,22 @@ export default function Form() {
                     <tbody>
                         {historyData.slice().reverse().map((item, index) => (
                             <tr key={index}>
-                                <td style={{ width: '30%' }}>
+                                <td style={{ width: '30%', wordWrap: 'break-word', maxWidth: '200px' }}>
                                     <div>
-                                        <span className="">{item.furl}</span> 
+                                        <span className="">{item.furl}</span>
                                     </div>
                                 </td>
                                 <td>
                                     <div>
-                                         <a href={local + item.surl} target="_blank" rel="noopener noreferrer"><span className="">{local + item.surl}</span></a>
+                                        <a href={local + item.surl} target="_blank" rel="noopener noreferrer"><span className="mx-1">{local + item.surl}</span></a>
+                                        <button className="btn btn-info me-2" onClick={() => copyUrl(item.surl)}>
+                                            {copySuccess === item.surl ? 'Copied!' : 'Copy URL'}
+                                        </button>
                                     </div>
                                 </td>
                                 <td>
                                     <div>
-                                        <span className="">{item.c}</span> 
+                                        <span className="">{item.c}</span>
                                     </div>
                                 </td>
                                 <td>
