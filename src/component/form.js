@@ -109,7 +109,7 @@ export default function Form() {
                         <tr>
                             <th>Full URL</th>
                             <th>Short URL</th>
-                            <th>Count</th>
+                            <th>click</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
