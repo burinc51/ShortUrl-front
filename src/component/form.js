@@ -147,8 +147,6 @@ export default function Form() {
                 </table>
 
             )}
-
-            {/* Modal for displaying QR Code */}
             <Modal show={showModal} onHide={() => setShowModal(false)} animation={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>QR Code</Modal.Title>
