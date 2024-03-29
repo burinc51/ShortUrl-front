@@ -69,7 +69,6 @@ export default function Form() {
     const copyUrl = (prop) => {
         navigator.clipboard.writeText(local + prop)
         setCopySuccess(prop);
-        console.log(copySuccess);
     }
 
     useEffect(() => {
@@ -102,7 +101,7 @@ export default function Form() {
                                 <a href={local + shorturl} target="_blank" rel="noopener noreferrer">{local + shorturl}</a>
                             </p>
                             <button className="btn btn-info" onClick={() => copyUrl(shorturl)}>
-                                {copySuccess === local + shorturl ? 'Copied!' : 'Copy URL'}
+                                {copySuccess === shorturl ? 'Copied!' : 'Copy URL'}
                             </button>
                         </div>
                         <div id='qrcode' className="text-center">
