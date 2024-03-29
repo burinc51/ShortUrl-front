@@ -3,12 +3,13 @@ import QRCode from "react-qr-code";
 import { Button, Modal } from 'react-bootstrap';
 
 export default function Form() {
-    const [inputValue, setInputValue] = useState("");
-    const [showContent, setShowContent] = useState(false);
-    const [shorturl, setShorturl] = useState("");
-    const [historyData, setHistoryData] = useState([]);
-    const [showhistory, setShowhistor] = useState(false);
-    const [showModal, setShowModal] = useState(false);
+    const [inputValue, setInputValue] = useState("")
+    const [full, setFull] = useState("")
+    const [showContent, setShowContent] = useState(false)
+    const [shorturl, setShorturl] = useState("")
+    const [historyData, setHistoryData] = useState([])
+    const [showhistory, setShowhistor] = useState(false)
+    const [showModal, setShowModal] = useState(false)
     const [showQr, setShowQr] = useState("");
     const local = "https://shorturl-server.onrender.com/"
 
@@ -20,7 +21,7 @@ export default function Form() {
         event.preventDefault();
         if (inputValue !== '') {
             setShowContent(true);
-
+            setFull(inputValue)
             fetch(`${local}api/form`, {
                 method: 'POST',
                 body: JSON.stringify({ inputValue }),
@@ -61,7 +62,7 @@ export default function Form() {
             headers: { 'Content-Type': 'application/json' }
         })
             .catch(error => console.error('Error:', error));
-            
+
     }
 
     useEffect(() => {
@@ -69,9 +70,9 @@ export default function Form() {
     })
 
     return (
-        <div className="container mt-5 text-center">
+        <div className="container mt-5 ">
             <h1>ShortURL and QR Code</h1>
-            <div className=' justify-content-center'>
+            <div className=' justify-content-center text-center'>
                 <form onSubmit={handleSubmit} className="mb-3">
                     <div className="input-group">
                         <input
@@ -88,8 +89,8 @@ export default function Form() {
                 {showContent && (
                     <div className="card mb-3">
                         <div className="card-body">
-                            <p className="card-text">Full URL: {inputValue}</p>
-                            <p className="card-text">Short URL: <a href={local + shorturl} target="_blank" rel="noopener noreferrer">{local+shorturl}</a></p>
+                            <p className="card-text">Full URL: {full}</p>
+                            <p className="card-text">Short URL: <a href={local + shorturl} target="_blank" rel="noopener noreferrer">{local + shorturl}</a></p>
                             <div id='qrcode' className="text-center">
                                 <QRCode
                                     size={256}
@@ -103,29 +104,47 @@ export default function Form() {
             </div>
             <button className="btn btn-primary mb-3" onClick={toggleShowHistory}>Show History</button>
             {showhistory && (
-                <ul className="list-group">
-                    {historyData.slice().reverse().map((item, index) => (
-                        <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <span className="fw-bold">Full URL:</span> {item.furl}
-                            </div>
-                            <div>
-                                <span className="fw-bold">Short URL:</span> <a href={local + item.surl} target="_blank" rel="noopener noreferrer">{local+item.surl}</a>
-                            </div>
-                            <div>
-                                <span className="fw-bold">Count:</span> {item.c}
-                            </div>
-                            <div>
-                                <Button variant="primary" onClick={() => show(item.surl)}>
-                                    Show QRCode
-                                </Button>
-                                <Button variant="danger" onClick={() => handleDelete(item._id)}>
-                                    Delete
-                                </Button>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
+                <table className="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Full URL</th>
+                            <th>Short URL</th>
+                            <th>Count</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {historyData.slice().reverse().map((item, index) => (
+                            <tr key={index}>
+                                <td style={{ width: '30%' }}>
+                                    <div>
+                                        <span className="">{item.furl}</span> 
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                         <a href={local + item.surl} target="_blank" rel="noopener noreferrer"><span className="">{local + item.surl}</span></a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span className="">{item.c}</span> 
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <button className="btn btn-primary me-2" onClick={() => show(item.surl)}>
+                                            Show QRCode
+                                        </button>
+                                        <button className="btn btn-danger" onClick={() => handleDelete(item._id)}>
+                                            Delete
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
 
             )}
 
