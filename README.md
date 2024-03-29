@@ -28,5 +28,5 @@ const local = " url ที่ติดต่อกับฝั่ง back-end "
 ```bash
 npm start
 ```
-## repository ฝั่ง server ของเว็บไซค์ shorturl
+## repository ฝั่ง server ของเว็บไซต์ shorturl
 https://github.com/burinc51/ShortUrl-server.git
