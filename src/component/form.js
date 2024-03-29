@@ -42,7 +42,7 @@ export default function Form() {
 
     const fetchHistoryData = async () => {
         try {
-            const response = await fetch(`${local}api/url`);
+            const response = await fetch(`${local}api/read`);
             const data = await response.json();
             setHistoryData(data);
         } catch (error) {
