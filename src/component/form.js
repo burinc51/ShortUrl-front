@@ -101,7 +101,7 @@ export default function Form() {
                             <p className="card-text mb-0 mx-1">Short URL: 
                                 <a href={local + shorturl} target="_blank" rel="noopener noreferrer">{local + shorturl}</a>
                             </p>
-                            <button className="btn btn-info" onClick={() => copyUrl(local + shorturl)}>
+                            <button className="btn btn-info" onClick={() => copyUrl(shorturl)}>
                                 {copySuccess === local + shorturl ? 'Copied!' : 'Copy URL'}
                             </button>
                         </div>
