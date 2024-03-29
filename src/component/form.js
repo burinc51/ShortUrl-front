@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import QRCode from "react-qr-code";
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 export default function Form() {
     const [inputValue, setInputValue] = useState("")
