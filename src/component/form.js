@@ -46,6 +46,7 @@ export default function Form() {
             const response = await fetch(`${local}api/read`);
             const data = await response.json();
             setHistoryData(data);
+            console.log(data)
         } catch (error) {
             console.error('Error fetching history data:', error);
         }
@@ -57,14 +58,18 @@ export default function Form() {
     }
 
     const handleDelete = async (prop) => {
-        fetch(`${local}api/delete`, {
-            method: 'DELETE',
-            body: JSON.stringify({ prop }),
-            headers: { 'Content-Type': 'application/json' }
-        })
-            .catch(error => console.error('Error:', error));
+        try {
+            await fetch(`${local}api/delete`, {
+                method: 'DELETE',
+                body: JSON.stringify({ prop }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+            await fetchHistoryData();
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
-    }
 
     const copyUrl = (prop) => {
         navigator.clipboard.writeText(local + prop)
@@ -73,8 +78,13 @@ export default function Form() {
 
     useEffect(() => {
         fetchHistoryData()
-    })
+    }, [showhistory, shorturl])
 
+    useEffect(() => {
+        setTimeout(
+            fetchHistoryData, 5000
+        )
+    })
     return (
         <div className="container mt-5 ">
             <h1>ShortURL and QR Code</h1>
@@ -98,7 +108,8 @@ export default function Form() {
                             <p className="card-text">Full URL: {full}</p>
                             <div className="d-flex justify-content-center align-items-center">
                                 <p className="card-text mb-0 mx-1">Short URL:
-                                    <a href={local + shorturl} target="_blank" rel="noopener noreferrer">{local + shorturl}</a>
+                                    <a href={local + shorturl} target="_blank" rel="noopener noreferrer" onClick={() => fetchHistoryData()}>{local + shorturl}</a>
+
                                 </p>
                                 <button className="btn btn-info" onClick={() => copyUrl(shorturl)}>
                                     {copySuccess === shorturl ? 'Copied!' : 'Copy URL'}
@@ -132,10 +143,11 @@ export default function Form() {
                         {historyData.slice().reverse().map((item, index) => (
                             <tr key={index}>
                                 <td style={{ width: '30%', wordWrap: 'break-word', maxWidth: '200px' }}>
-                                        <span className="">{item.furl}</span>
+                                    <span className="">{item.furl}</span>
                                 </td>
                                 <td>
-                                        <a href={local + item.surl} target="_blank" rel="noopener noreferrer"><span className="mx-1">{local + item.surl}</span></a>
+                                    <a href={local + item.surl} target="_blank" rel="noopener noreferrer" onClick={() => fetchHistoryData()}><span className="mx-1">{local + item.surl}</span></a>
+
                                 </td>
                                 <td>
                                     <button className="btn btn-info me-2" onClick={() => copyUrl(item.surl)}>
@@ -143,7 +155,7 @@ export default function Form() {
                                     </button>
                                 </td>
                                 <td>
-                                        <span className="">{item.c}</span>
+                                    <span className="">{item.c}</span>
                                 </td>
                                 <td>
                                     <div>
