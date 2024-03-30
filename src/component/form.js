@@ -23,6 +23,7 @@ export default function Form() {
         if (inputValue !== '') {
             setShowContent(true);
             setFull(inputValue)
+            setInputValue('');
             fetch(`${local}api/form`, {
                 method: 'POST',
                 body: JSON.stringify({ inputValue }),
